@@ -62,11 +62,11 @@ static const InputMapEntry INPUT_MAP[] PROGMEM = {
     {SRC_A, 4, 1, MATCH_BITS, ANY_NONZERO, IN(18), MODE_FOLLOW},  // exhaust quiet
     {SRC_A, 5, 1, MATCH_BITS, ANY_NONZERO, IN(20), MODE_FOLLOW},  // hazards
 
-    {SRC_B, 0, 2, MATCH_EQUAL, POS(3), IN(26), MODE_FOLLOW},  // interior
-    {SRC_B, 0, 2, MATCH_EQUAL, POS(7), IN(27), MODE_FOLLOW},  // engine / jet
-    {SRC_B, 2, 2, MATCH_EQUAL, POS(5), IN(25), MODE_FOLLOW},  // smoke power
+    {SRC_B, 0, 2, MATCH_EQUAL, POS(3), IN(38), MODE_FOLLOW},  // interior
+    {SRC_B, 0, 2, MATCH_EQUAL, POS(7), IN(8), MODE_FOLLOW},   // engine / jet
+    {SRC_B, 2, 2, MATCH_EQUAL, POS(5), IN(37), MODE_FOLLOW},  // smoke power
     {SRC_B, 4, 2, MATCH_EQUAL, POS(3), IN(23), MODE_FOLLOW},  // wipers low
-    {SRC_B, 4, 2, MATCH_EQUAL, POS(5), IN(24), MODE_FOLLOW},  // wipers high
+    {SRC_B, 4, 2, MATCH_EQUAL, POS(5), IN(7), MODE_FOLLOW},   // wipers high
 };
 
 #endif

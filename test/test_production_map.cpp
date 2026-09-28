@@ -100,10 +100,10 @@ enum {
   IN_LOW_BEAMS = 21,
   IN_HIGH_BEAMS = 22,
   IN_WIPERS_LOW = 23,
-  IN_WIPERS_HIGH = 24,
-  IN_SMOKE_POWER = 25,
-  IN_INTERIOR_LIGHTS = 26,
-  IN_ENGINE_LIGHTS = 27,
+  IN_WIPERS_HIGH = 7,
+  IN_SMOKE_POWER = 37,
+  IN_INTERIOR_LIGHTS = 38,
+  IN_ENGINE_LIGHTS = 8,
 };
 
 // ---------------------------------------------------------------------------
@@ -250,8 +250,8 @@ static void testSwitchesAndRotariesCoexist() {
   expectInputs("low beams + horn + engine lights + wipers low", expected, 4);
 }
 
-// IN01-IN16 belong to the physical rocker switches and must stay clear.
-static void testFirstTwoBytesNeverUsed() {
+// Door wires already occupy IN24-IN27. CAN rotaries must not touch those bits.
+static void testDoorInputsStayClear() {
   resetPanels();
   setSwitch(B_LOW_BEAM, true);
   setSwitch(B_HIGH_BEAM, true);
@@ -264,12 +264,12 @@ static void testFirstTwoBytesNeverUsed() {
   uint8_t actual[8];
   aggBuildPayload(actual);
 
+  const uint8_t doorBits = (uint8_t)(actual[2] & 0x01) | (uint8_t)(actual[3] & 0xE0);
   g_checks++;
-  if (actual[0] != 0 || actual[1] != 0) {
+  if (doorBits != 0) {
     g_failures++;
-    printf("FAIL  everything on still leaves IN01-IN16 clear\n");
-    printf("        byte 0 = %02X, byte 1 = %02X, both should be 00\n", actual[0],
-           actual[1]);
+    printf("FAIL  CAN frame set a door input (IN24-IN27)\n");
+    printf("        byte 2 = %02X, byte 3 = %02X\n", actual[2], actual[3]);
   }
 }
 
@@ -302,7 +302,7 @@ int main() {
   testUnusedDetents();
   testMidTurnAssertsNeither();
   testSwitchesAndRotariesCoexist();
-  testFirstTwoBytesNeverUsed();
+  testDoorInputsStayClear();
   testPanelsExpireIndependently();
 
   printf("\n%d checks, %d failures\n", g_checks, g_failures);

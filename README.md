@@ -108,9 +108,8 @@ wings — are wired straight into the Mastercell's physical input terminals and
 never touch this Arduino. Counting each direction separately they need nine
 inputs, and they will almost certainly be wired to the low-numbered terminals.
 
-The CAN controls therefore start at **IN17**, leaving IN01–IN16 clear. Nothing
-this sketch sends can ever set a bit in bytes 0 or 1 of the frame, and there is
-a test that asserts exactly that with every control switched on at once.
+The keypad switches stay on **IN17–IN22**. The rotaries use **IN07, IN08,
+IN23, IN37 and IN38** so they do not collide with the door wires on IN24–IN27.
 
 This matters because a CAN controlled input and a physical input wire with the
 same number are the same logical input to the Mastercell. If they overlapped, a
@@ -137,11 +136,11 @@ on all three and drives nothing:
 
 | Bytes | Knob | Position | Function | Input |
 | --- | --- | --- | --- | --- |
-| 0–1 | Left | 3 | Footwell + centre tunnel ambient | IN26 |
-| 0–1 | Left | 7 | Engine ambient + jet nozzle | IN27 |
-| 2–3 | Middle | 5 | Smoke machine main power | IN25 |
+| 0–1 | Left | 3 | Footwell + centre tunnel ambient | IN38 |
+| 0–1 | Left | 7 | Engine ambient + jet nozzle | IN08 |
+| 2–3 | Middle | 5 | Smoke machine main power | IN37 |
 | 4–5 | Right | 3 | Wipers low | IN23 |
-| 4–5 | Right | 5 | Wipers high | IN24 |
+| 4–5 | Right | 5 | Wipers high | IN07 |
 | 6–7 | — | — | unused | — |
 
 Two things here are assumptions rather than things you told me:
@@ -294,7 +293,7 @@ car behaviour by name: each switch driving its own input, switches accumulating
 and releasing independently, the wiper and smoke positions, the interior
 lighting exclusivity requirement, unused detents driving nothing, a knob caught
 between detents asserting neither, switches and knobs coexisting in one frame,
-IN01–IN16 staying clear with everything switched on, and one panel timing out
+IN24–IN27 staying clear of the door wires, and one panel timing out
 without taking the other down.
 
 The third repeats those production tests with `ROTARY_AS_BITMASK` set to 0, so
@@ -326,8 +325,8 @@ two panels as one stream.
   and 4 are assumed, being the two previously called show lights and aux
   switch.
 - **The rotary encoding**, bitmask or plain detent number. One `#define`.
-- **The input numbers.** IN17–IN27 were allocated as a block and need to line
-  up with the inCODE NGX cases.
+- **The input numbers.** Door wires keep IN24–IN27. Rotaries are on IN07,
+  IN08, IN23, IN37 and IN38.
 - **Whether CAN controlled inputs and physical input wires share numbering**,
   which decides how much clearance the rockers need.
 
