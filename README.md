@@ -108,8 +108,8 @@ wings — are wired straight into the Mastercell's physical input terminals and
 never touch this Arduino. Counting each direction separately they need nine
 inputs, and they will almost certainly be wired to the low-numbered terminals.
 
-The keypad switches stay on **IN17–IN22**. The rotaries use **IN07, IN08,
-IN23, IN37 and IN38** so they do not collide with the door wires on IN24–IN27.
+The keypad switches stay on **IN17–IN22**. The rotaries use **IN12, IN13,
+IN14, IN23 and IN37** so they do not collide with the door wires on IN24–IN27.
 
 This matters because a CAN controlled input and a physical input wire with the
 same number are the same logical input to the Mastercell. If they overlapped, a
@@ -136,11 +136,11 @@ on all three and drives nothing:
 
 | Bytes | Knob | Position | Function | Input |
 | --- | --- | --- | --- | --- |
-| 0–1 | Left | 3 | Footwell + centre tunnel ambient | IN38 |
-| 0–1 | Left | 7 | Engine ambient + jet nozzle | IN08 |
-| 2–3 | Middle | 5 | Smoke machine main power | IN37 |
+| 0–1 | Left | 3 | Footwell + centre tunnel ambient | IN13 |
+| 0–1 | Left | 7 | Engine ambient + jet nozzle | IN12 |
+| 2–3 | Middle | 5 | Smoke machine main power | IN14 |
 | 4–5 | Right | 3 | Wipers low | IN23 |
-| 4–5 | Right | 5 | Wipers high | IN07 |
+| 4–5 | Right | 5 | Wipers high | IN37 |
 | 6–7 | — | — | unused | — |
 
 Two things here are assumptions rather than things you told me:
@@ -325,8 +325,8 @@ two panels as one stream.
   and 4 are assumed, being the two previously called show lights and aux
   switch.
 - **The rotary encoding**, bitmask or plain detent number. One `#define`.
-- **The input numbers.** Door wires keep IN24–IN27. Rotaries are on IN07,
-  IN08, IN23, IN37 and IN38.
+- **The input numbers.** Door wires keep IN24–IN27. Rotaries are on IN12,
+  IN13, IN14, IN23 and IN37.
 - **Whether CAN controlled inputs and physical input wires share numbering**,
   which decides how much clearance the rockers need.
 

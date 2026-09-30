@@ -100,10 +100,10 @@ enum {
   IN_LOW_BEAMS = 21,
   IN_HIGH_BEAMS = 22,
   IN_WIPERS_LOW = 23,
-  IN_WIPERS_HIGH = 7,
-  IN_SMOKE_POWER = 37,
-  IN_INTERIOR_LIGHTS = 38,
-  IN_ENGINE_LIGHTS = 8,
+  IN_WIPERS_HIGH = 37,
+  IN_SMOKE_POWER = 14,
+  IN_INTERIOR_LIGHTS = 13,
+  IN_ENGINE_LIGHTS = 12,
 };
 
 // ---------------------------------------------------------------------------
