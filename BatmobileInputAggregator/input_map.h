@@ -30,15 +30,8 @@ enum : uint8_t { MATCH_BITS, MATCH_EQUAL };
 
 #define ANY_NONZERO 0xFFFFu
 
-#ifndef ROTARY_AS_BITMASK
-#define ROTARY_AS_BITMASK 1
-#endif
-
-#if ROTARY_AS_BITMASK
-#define POS(n) ((uint16_t)1u << ((n) - 1))
-#else
-#define POS(n) ((uint16_t)(n))
-#endif
+// SW4 sends a raw detent count, rest = 0. Labeled position n is value n-1.
+#define POS(n) ((uint16_t)((n) - 1))
 
 struct InputMapEntry {
   uint8_t source;

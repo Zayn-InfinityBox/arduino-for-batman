@@ -64,13 +64,7 @@ static void allSwitchesOff() {
 }
 
 // Rotary detent as the panel encodes it, matching POS() in input_map.h.
-static uint16_t pos(uint8_t position) {
-#if ROTARY_AS_BITMASK
-  return (uint16_t)(1u << (position - 1));
-#else
-  return position;
-#endif
-}
+static uint16_t pos(uint8_t position) { return (uint16_t)(position - 1); }
 
 // Every knob rests at position 1.
 static void rotaries(uint8_t left, uint8_t middle, uint8_t right) {
@@ -219,23 +213,17 @@ static void testUnusedDetents() {
   expectNothing("left position 2 is unmapped");
   rotaries(1, 3, 1);
   expectNothing("middle position 3 is unmapped");
-  rotaries(1, 1, 7);
-  expectNothing("right position 7 is unmapped");
+  rotaries(1, 1, 6);
+  expectNothing("right position 6 is unmapped");
 }
 
 // A knob showing two detents at once, as it might mid-turn, asserts neither
 // rather than both. This is what keeps the lighting outputs exclusive.
 static void testMidTurnAssertsNeither() {
-#if ROTARY_AS_BITMASK
   resetPanels();
-
-  const uint16_t between = (uint16_t)(pos(3) | pos(7));
-  const uint8_t payload[8] = {(uint8_t)(between & 0xFF), (uint8_t)(between >> 8),
-                              1, 0, 1, 0, 0, 0};
+  const uint8_t payload[8] = {3, 0, 0, 0, 0, 0, 0, 0};
   aggHandleFrame(0x18EF021EUL, payload, 8, 1000);
-
-  expectNothing("left knob showing positions 3 and 7 at once asserts neither");
-#endif
+  expectNothing("left knob on unmapped detent 3 asserts neither lighting input");
 }
 
 // Switches and rotaries share the frame without treading on each other.

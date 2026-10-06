@@ -175,17 +175,10 @@ Rotary rows are written with the position numbers marked on the switch —
 `POS(3)`, `POS(5)`, `POS(7)` — so the table reads the same as your notes. The
 `POS()` macro turns those into whatever the panel actually puts on the wire.
 
-With `ROTARY_AS_BITMASK` set, which is the default, position *n* is bit *n−1*
-of the 16-bit field, so position 3 is `0x0004` and position 7 is `0x0040`.
-Little-endian is the J1939 convention for multi-byte fields, so bit 0 lives in
-the lower-numbered byte of the pair and bit 8 in the higher one. Sixteen bits
-covers a sixteen-position knob, which is presumably why each one gets two
-bytes.
-
-If the SW4 turns out to send the plain detent number instead — `3` for position
-3 — set `ROTARY_AS_BITMASK` to 0. Nothing else changes. The two encodings are
-easy to tell apart on a bus analyser: watch a knob go to position 3 and see
-whether the field reads `0x0004` or `0x0003`.
+The SW4 sends a raw detent count, not a bitmask. Rest / labeled position 1 is
+`00 00`. Labeled position *n* is the number *n−1*, so position 3 is `02 00`,
+position 5 is `04 00`, and position 7 is `06 00`. That is what the 10/6/26
+CAN trace showed.
 
 ### Why the rotaries match exactly
 
